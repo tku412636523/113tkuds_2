@@ -1,0 +1,50 @@
+import java.util.*;
+
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits == null || digits.length() == 0) return result; 
+
+        String[] mapping = {
+            "",    
+            "",   
+            "abc", 
+            "def", 
+            "ghi", 
+            "jkl", 
+            "mno", 
+            "pqrs",
+            "tuv", 
+            "wxyz" 
+        };
+
+        backtrack(result, new StringBuilder(), digits, 0, mapping);
+        return result;
+    }
+
+    private void backtrack(List<String> result, StringBuilder combination, String digits, int index, String[] mapping) {
+        if (index == digits.length()) {
+            result.add(combination.toString());
+            return;
+        }
+
+        String letters = mapping[digits.charAt(index) - '0'];
+        for (char c : letters.toCharArray()) {
+            combination.append(c); 
+            backtrack(result, combination, digits, index + 1, mapping); 
+            combination.deleteCharAt(combination.length() - 1); 
+        }
+    }
+}
+
+/*
+解題思路：
+1. 建立數字對應的字母表（模擬電話按鍵）。
+2. 使用回溯法 (Backtracking) 遍歷所有可能的字母組合。
+   - 每次選擇一個字母加入組合。
+   - 遞迴處理下一個數字。
+   - 若已完成整個 digits，加入結果集。
+3. 若輸入為空，返回空列表。
+4. 時間複雜度 O(3^n * 4^m)，其中 n 是對應 3 個字母的數字數量，m 是對應 4 個字母的數字數量。
+   空間複雜度 O(n)（遞迴深度）。
+*/
